@@ -40,6 +40,23 @@ class Repository {
 
     return new Repository(path);
   }
+  
+  
+  static async clone(path, url, options = {}) {
+    path = resolve(process.cwd(), path); // eslint-disable-line no-param-reassign
+    let exists = await fs.exists(path);
+    if (exists) {
+      throw new Error(`The directory '${path}' is exist. Can't clone in this directory.`);
+    }
+    
+    const opts = { cwd: process.cwd(), stdio: 'inherit' };
+    const code = await cp.spawn('git', ['clone', url, path], opts);
+    if (code !== 0) {
+      throw new Error(`Failed to clone Git repository from '${url}' to '${path}'.`);
+    }
+
+    return new Repository(path);
+  }
 
   async setRemote(name, url) {
     const opts = { cwd: this.path };
