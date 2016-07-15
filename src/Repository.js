@@ -102,6 +102,11 @@ class Repository {
     const opts = { cwd: this.path, stdio: 'inherit' };
     return cp.spawn('git', ['commit', '-m', message], opts);
   }
+  
+  pull(message) {
+    const opts = { cwd: this.path, stdio: 'inherit' };
+    return cp.spawn('git', ['pull'], opts);
+  }
 
   push(remote = 'origin', branch = 'master', options = {}) {
     const opts = { cwd: this.path, stdio: 'inherit' };
